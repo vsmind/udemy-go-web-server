@@ -26,9 +26,16 @@ func main() {
 
 	render.NewTemplate(&app)
 
-	http.HandleFunc("/", handlers.Repo.HomeWebHandler)
-	http.HandleFunc("/about", handlers.Repo.AboutWebHandler)
+	//http.HandleFunc("/", handlers.Repo.HomeWebHandler)
+	//http.HandleFunc("/about", handlers.Repo.AboutWebHandler)
 	fmt.Println("Listening to port", portNumber)
 	// _ allows us to ignore error from listener
-	_ = http.ListenAndServe(portNumber, nil)
+	//_ = http.ListenAndServe(portNumber, nil)
+	serve := &http.Server{
+		Addr:    portNumber,
+		Handler: routes(&app),
+	}
+
+	err := serve.ListenAndServe()
+	log.Fatal(err)
 }
